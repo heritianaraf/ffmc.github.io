@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0878c9">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="FMMC">
+<title>FMMC — Assistant médical RP</title>
+<style>
+:root{--bg:#f4f9fd;--card:#fff;--tx:#12304a;--mut:#557187;--pri:#0878c9;--pri2:#075f9f;--chip:#eef8ff;--bd:#c9e2f5;--on:#0878c9;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1a26;--card:#15273a;--tx:#e6f1fb;--mut:#93aec4;--pri:#3da0e6;--pri2:#7cc3f5;--chip:#1b3249;--bd:#27445e;--on:#1d6fae}color-scheme:dark}
+:root[data-theme="dark"]{--bg:#0d1a26;--card:#15273a;--tx:#e6f1fb;--mut:#93aec4;--pri:#3da0e6;--pri2:#7cc3f5;--chip:#1b3249;--bd:#27445e;--on:#1d6fae}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--tx);padding-bottom:calc(130px + env(safe-area-inset-bottom,0px))}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--pri);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--pri);z-index:10}
+header h1{font-family:Georgia,serif;font-size:22px;margin:0;letter-spacing:1px}
+header small{display:block;opacity:.85;font-size:12px}
+header button{background:#ffffff30;color:#fff;border:0;border-radius:10px;padding:8px 12px;font-size:13px;font-weight:600}
+main{padding:14px;max-width:640px;margin:0 auto}
+.view{display:none}.view.on{display:block}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px;margin-bottom:14px}
+h2{font-family:Georgia,serif;color:var(--pri2);font-size:18px;margin:0 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--chip);border:1px solid var(--bd);color:var(--tx);border-radius:999px;padding:10px 14px;font-size:15px;min-height:44px}
+.chip.on{background:var(--on);border-color:var(--on);color:#fff;font-weight:600}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--chip);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:8px;min-height:48px;width:100%;color:var(--tx);font-size:15px;text-align:left}
+.row.on{background:var(--on);border-color:var(--on);color:#fff}
+.row b{white-space:nowrap}
+.res h3{margin:0 0 6px;font-size:20px}
+.res p{margin:6px 0}
+.mut{color:var(--mut);font-size:13px}
+.alt{border-top:1px solid var(--bd);margin-top:10px;padding-top:8px}
+.ghost{background:none;border:1px solid var(--bd);color:var(--pri2);border-radius:10px;padding:10px 14px;font-size:14px;font-weight:600;margin-top:6px}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--card);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tot{display:flex;justify-content:space-between;align-items:center;padding:10px 16px 4px;font-weight:700;color:var(--pri2);font-size:18px}
+.tot span:first-child{font-size:13px;font-weight:500;color:var(--mut)}
+nav{display:flex}
+nav button{flex:1;background:none;border:0;padding:8px 4px 10px;color:var(--mut);font-size:12px;min-height:52px}
+nav button .i{display:block;font-size:20px}
+nav button.on{color:var(--pri);font-weight:700}
+
+header{flex-direction:column;align-items:stretch;padding:0}
+.top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 6px}
+header nav{width:100%}
+header nav button{color:#ffffffb8;min-height:44px;padding:8px 4px;border-bottom:3px solid transparent;font-size:13px}
+header nav button .i{display:inline;font-size:16px;margin-right:4px}
+header nav button.on{color:#fff;border-bottom-color:#fff}
+.tot{justify-content:flex-start;gap:14px;padding:10px 16px}
+body{padding-bottom:calc(70px + env(safe-area-inset-bottom,0px))}
+</style>
+</head>
+<body>
+<header>
+  <div class="top"><div><h1>FMMC</h1><small>Assistant médical — FiveM RP</small></div>
+  <button id="reset" type="button">Réinitialiser</button></div>
+  <nav>
+    <button type="button" data-v="diag" class="on"><span class="i">🔎</span>Diagnostic</button>
+    <button type="button" data-v="tarifs"><span class="i">💰</span>Tarifs</button>
+    <button type="button" data-v="recap"><span class="i">🧾</span>Récap</button>
+  </nav>
+</header>
+
+<main>
+  <section class="view on" id="v-diag">
+    <div class="card">
+      <h2>🔎 Symptômes du patient</h2>
+      <div class="chips" id="symptoms"></div>
+      <button class="ghost" id="clearSym" type="button">Tout décocher</button>
+    </div>
+    <div class="card res" id="result"><h2>📋 Résultat</h2><p class="mut">Touchez les symptômes pour identifier le traitement.</p></div>
+  </section>
+
+  <section class="view" id="v-tarifs">
+    <div class="card"><h2>🏥 Soins médicaux & consultations</h2><div id="t-gen"></div></div>
+    <div class="card"><h2>🩺 Soins & hospitalisation</h2><div id="t-soins"></div></div>
+    <div class="card"><h2>📄 Certificats</h2><div id="t-cert"></div></div>
+  </section>
+
+  <section class="view" id="v-recap">
+    <div class="card"><h2>🧾 Récapitulatif</h2><div id="recap" class="mut">Aucun soin sélectionné.</div></div>
+  </section>
+</main>
+
+<div class="bar">
+  <div class="tot"><span id="count">0 soin</span><span id="total">Total : $0</span></div>
+</div>
+
+<script>
+const diseases=[
+["🤒 Grippe",["fièvre","éternuements","fatigue","écoulement nasal"],"Ordonnance Grippe","Médicament antiviral"],
+["🫁 Pneumonie",["toux","douleur thoracique","forte fièvre","essoufflement"],"Ordonnance Pneumonie","Antibiotiques"],
+["🦠 Infection bactérienne",["rougeur","gonflement","douleur","fièvre"],"Ordonnance Infection","Pénicilline"],
+["☠️ Intoxication",["nausées","vomissements","vertiges","douleurs abdominales"],"Ordonnance Intoxication","Antidote"],
+["❤️ Trouble cardiaque",["douleur thoracique","essoufflement","fatigue","palpitations"],"Ordonnance Cardiaque","Nitroglycérine"],
+["🤕 Migraine",["maux de tête","sensibilité à la lumière","nausées","vision floue"],"Ordonnance Migraine","Antidouleur"],
+["🤢 Intoxication alimentaire",["vomissements","douleurs abdominales","vertiges","transpiration"],"Ordonnance Intoxication alimentaire","Charbon médicinal"],
+["😰 Crise d’angoisse",["palpitations","transpiration","vertiges","essoufflement"],"Ordonnance Anxiété","Anxiolytique"]
+];
+const gen=[["Tête",700],["Haut du corps",800],["Bas du corps",800],["Jambe",800],["Béquille (selon l’opération)",500],["Patient dans le coma — supplément",500],["Consultation générale",200],["Kit IFAK",250]];
+const soins=[["Soin — Béquille",200],["Hospitalisation — Chambre privée",500],["Hospitalisation — Chambre publique",200]];
+const cert=[["Certificat — PPA",2000],["Certificat — Visite Médicale",250],["Certificat — Visite NLPD",250]];
+
+const $=id=>document.getElementById(id);
+const symList=[...new Set(diseases.flatMap(d=>d[1]))].sort();
+let selSym=new Set(), selTar=new Set();
+
+try{const s=JSON.parse(localStorage.getItem("fmmc")||"{}");selSym=new Set(s.sym||[]);selTar=new Set(s.tar||[])}catch(e){}
+function save(){try{localStorage.setItem("fmmc",JSON.stringify({sym:[...selSym],tar:[...selTar]}))}catch(e){}}
+
+function renderSym(){
+  $("symptoms").innerHTML=symList.map(s=>`<button type="button" class="chip${selSym.has(s)?" on":""}" data-s="${s}">${s[0].toUpperCase()+s.slice(1)}</button>`).join("");
+}
+function diagnose(){
+  const r=$("result");
+  if(!selSym.size){r.innerHTML="<h2>📋 Résultat</h2><p class=\"mut\">Touchez les symptômes pour identifier le traitement.</p>";return}
+  const sc=diseases.map(d=>({d,n:d[1].filter(s=>selSym.has(s)).length})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);
+  if(!sc.length){r.innerHTML="<h2>📋 Résultat</h2><p>Aucun traitement correspondant dans la base RP.</p>";return}
+  const b=sc[0];
+  let h=`<h2>📋 Résultat RP</h2><h3>${b.d[0]}</h3><p>📄 <b>Ordonnance :</b> ${b.d[2]}</p><p>💊 <b>Traitement :</b> ${b.d[3]}</p><p class="mut">${b.n}/${b.d[1].length} symptômes correspondants</p>`;
+  const alts=sc.slice(1,3);
+  if(alts.length)h+=`<div class="alt"><p class="mut">Autres possibilités</p>`+alts.map(a=>`<p>${a.d[0]} — <span class="mut">${a.n}/${a.d[1].length} · ${a.d[3]}</span></p>`).join("")+`</div>`;
+  r.innerHTML=h;
+}
+
+const groups=[["t-gen",gen],["t-soins",soins],["t-cert",cert]];
+const priceOf=new Map([...gen,...soins,...cert]);
+function renderTar(){
+  groups.forEach(([id,l])=>{
+    $(id).innerHTML=l.map(t=>`<button type="button" class="row${selTar.has(t[0])?" on":""}" data-t="${t[0]}"><span>${t[0]}</span><b>$${t[1]}</b></button>`).join("");
+  });
+}
+function recap(){
+  const items=[...selTar];
+  const total=items.reduce((s,n)=>s+priceOf.get(n),0);
+  $("total").textContent="Total : $"+total;
+  $("count").textContent=items.length+(items.length>1?" soins":" soin");
+  $("recap").className=items.length?"":"mut";
+  $("recap").innerHTML=items.length?items.map(n=>`<div class="row" style="cursor:default"><span>${n}</span><b>$${priceOf.get(n)}</b></div>`).join("")+`<p style="font-size:20px;font-weight:700;color:var(--pri2);text-align:right">Total : $${total}</p>`:"Aucun soin sélectionné.";
+}
+
+$("symptoms").addEventListener("click",e=>{
+  const b=e.target.closest("[data-s]");if(!b)return;
+  const s=b.dataset.s;selSym.has(s)?selSym.delete(s):selSym.add(s);
+  b.classList.toggle("on");diagnose();save();
+});
+$("clearSym").onclick=()=>{selSym.clear();renderSym();diagnose();save()};
+document.getElementById("v-tarifs").addEventListener("click",e=>{
+  const b=e.target.closest("[data-t]");if(!b)return;
+  const n=b.dataset.t;selTar.has(n)?selTar.delete(n):selTar.add(n);
+  b.classList.toggle("on");recap();save();
+});
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x===b));
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+b.dataset.v));
+  window.scrollTo(0,0);
+});
+$("reset").onclick=()=>{selSym.clear();selTar.clear();renderSym();renderTar();diagnose();recap();save()};
+
+renderSym();renderTar();diagnose();recap();
+if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})})}
+</script>
+</body>
+</html>
